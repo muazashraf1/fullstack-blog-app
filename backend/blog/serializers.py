@@ -8,7 +8,8 @@ from blog.models import Blog
 
 
 class BlogSerializer(serializers.ModelSerializer):
-    image = serializers.SerializerMethodField()
+    # image = serializers.SerializerMethodField()
+    # image = serializers.ImageField(use_url=True)
     author = serializers.ReadOnlyField(source='author.username')  # temporary hal for author without JWT
 
     class Meta:

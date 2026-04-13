@@ -37,12 +37,13 @@ function CreatePage() {
     }
 
     const handleChange = (e) => {
-        const { name, value, file } = e.target
+        const { name, value, files } = e.target
 
-        if (file === "image") {
+        // if (files === "image") {
+        if (name === "image") {
             setFormData({
                 ...formData,
-                image: file[0]
+                image: files[0]
             })
         } else {
             setFormData({
@@ -101,6 +102,8 @@ function CreatePage() {
         }
     }
 
+    console.log(formData.image)
+
 
     // console.log(formData);
 
@@ -147,7 +150,6 @@ function CreatePage() {
                         <label className="block mb-1 font-medium">Upload Image</label>
                         <input
                             type="file"
-                            value={formData.image}
                             onChange={handleChange}
                             name='image'
                             className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white"
