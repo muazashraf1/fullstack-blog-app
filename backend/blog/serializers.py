@@ -9,6 +9,7 @@ from blog.models import Blog
 
 class BlogSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
+    author = serializers.ReadOnlyField(source='author.username')  # temporary hal for author without JWT
 
     class Meta:
         model = Blog

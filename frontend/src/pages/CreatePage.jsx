@@ -1,12 +1,109 @@
+import axios from 'axios'
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function CreatePage() {
+    const navigate = useNavigate()
+    const [errors, setErrors] = useState({})
     const [formData, setFormData] = useState({
         title: "",
         content: "",
         image: "",
         status: "",
     })
+
+    const handleValidation = () => {
+        let errs = {}
+
+        if (!formData.title) {
+            errs.title = "Required blog name"
+        }
+
+        if (!formData.content) {
+            errs.name = "Required blog content"
+        }
+
+        if (!formData.image) {
+            errs.name = "Required blog image"
+        }
+
+        if (!formData.status) {
+            errs.name = "Required blog status"
+        }
+
+        setErrors(errs)
+        return Object.keys(errs).length === 0
+
+    }
+
+    const handleChange = (e) => {
+        const { name, value, file } = e.target
+
+        if (file === "image") {
+            setFormData({
+                ...formData,
+                image: file[0]
+            })
+        } else {
+            setFormData({
+                ...formData,
+                [name]: value
+            })
+        }
+
+    }
+
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault()
+
+    //     let isValid = handleValidation()
+
+    //     if (isValid) {
+    //         try {
+    //             const posting = await axios.post('http://127.0.0.1:8000/api/blogs/', formData)
+    //             console.log(posting.data)
+    //         } catch (error) {
+    //             console.error("Error adding blog:", error)
+    //         }
+    //     }
+
+    // }
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+
+        let isValid = handleValidation()
+
+        if (isValid) {
+            try {
+                const data = new FormData()
+                data.append("title", formData.title)
+                data.append("content", formData.content)
+                data.append("image", formData.image)
+                data.append("status", formData.status)
+
+                const posting = await axios.post(
+                    'http://127.0.0.1:8000/api/blogs/',
+                    data,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data"
+                        }
+                    }
+                )
+
+                console.log(posting.data)
+
+            } catch (error) {
+                console.error("Error adding blog:", error)
+            }
+        }
+    }
+
+
+    // console.log(formData);
+
     return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-10">
 
@@ -17,7 +114,7 @@ function CreatePage() {
                     Create New Blog
                 </h2>
 
-                <form className="space-y-5">
+                <form className="space-y-5" onSubmit={handleSubmit}>
 
                     {/* Title */}
                     <div>
@@ -26,6 +123,7 @@ function CreatePage() {
                             type="text"
                             name="title"
                             value={formData.title}
+                            onChange={handleChange}
                             placeholder="Enter blog title..."
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         />
@@ -38,6 +136,7 @@ function CreatePage() {
                             rows="6"
                             name='content'
                             value={formData.content}
+                            onChange={handleChange}
                             placeholder="Write your blog content..."
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         ></textarea>
@@ -49,6 +148,7 @@ function CreatePage() {
                         <input
                             type="file"
                             value={formData.image}
+                            onChange={handleChange}
                             name='image'
                             className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white"
                         />
@@ -60,6 +160,7 @@ function CreatePage() {
                         <select
                             name='status'
                             value={formData.status}
+                            onChange={handleChange}
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         >
                             <option value="draft">Draft</option>

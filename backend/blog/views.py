@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from blog.models import Blog
 from blog.serializers import BlogSerializer
 from rest_framework.response import Response
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -17,7 +18,9 @@ class BlogList(APIView):
         data = request.data
         serializer = BlogSerializer(data=data)
         if serializer.is_valid():
-            serializer.save()
+            # serializer.save()
+            user = User.objects.first()# temporary hal for author without JWT
+            serializer.save(author=user) # temporary hal for author without JWT
             return Response(serializer.data)
         return Response(serializer.errors)
 
