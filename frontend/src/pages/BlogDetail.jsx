@@ -1,9 +1,10 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 function BlogDetail() {
   const { id } = useParams()
+  const navigate = useNavigate()
   const [singleBlog, setSingleBlog] = useState(null)
 
   const singleFetching = async () => {
@@ -27,18 +28,67 @@ function BlogDetail() {
     )
   }
 
+
+  const handleDelete = async () => {
+    try {
+      const deleting = await axios.delete(`http://127.0.0.1:8000/api/blogs/${id}/`)
+      if(deleting.status === 204) {
+        // singleFetching()
+        navigate('/blog-list')
+      }
+    } catch (error) {
+      console.error("error in deleting:", error)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4 flex justify-center">
 
+
       <div className="max-w-4xl w-full bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden">
 
-        {/* Image */}
-        <img
-          src={singleBlog.image}
-          alt={singleBlog.title}
-          className="w-full h-[400px] object-cover"
-        />
 
+        <div className="relative">
+
+          {/* Back Button */}
+          <button
+            onClick={() => navigate('/blog-list')}
+            className="absolute top-4 left-4 bg-white/80 backdrop-blur px-4 py-2 rounded-lg shadow hover:shadow-md hover:scale-105 transition"
+          >
+            ← Back
+          </button>
+
+          {/* Image */}
+          <img
+            src={singleBlog.image}
+            alt={singleBlog.title}
+            className="w-full h-[400px] object-cover"
+          />
+
+        </div>
+
+        {/* Action Bar (Edit/Delete) */}
+        <div className="flex justify-end gap-3 px-6 py-4 border-b bg-gray-50">
+
+          {/* Edit Button */}
+          <button
+            onClick={() => navigate(`/edit-blog/${id}`)}
+            className="px-5 py-2 bg-blue-500 text-white rounded-xl shadow-md 
+    hover:bg-blue-600 hover:scale-105 transition-all duration-200"
+          >
+            ✏️ Edit
+          </button>
+
+          {/* Delete Button */}
+          <button
+            onClick={handleDelete}
+            className="px-5 py-2 bg-red-500 text-white rounded-xl shadow-md 
+    hover:bg-red-600 hover:scale-105 transition-all duration-200"
+          >
+            🗑️ Delete
+          </button>
+
+        </div>
         {/* Content */}
         <div className="p-8">
 
@@ -55,8 +105,8 @@ function BlogDetail() {
 
           {/* Status Badge */}
           <span className={`inline-block px-3 py-1 text-xs rounded-full mb-4 
-            ${singleBlog.status === "published" 
-              ? "bg-green-100 text-green-700" 
+            ${singleBlog.status === "published"
+              ? "bg-green-100 text-green-700"
               : "bg-yellow-100 text-yellow-700"
             }`}
           >

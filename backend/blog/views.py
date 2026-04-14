@@ -33,3 +33,8 @@ class BlogDetail(APIView):
         blog = get_object_or_404(Blog, id=id)
         serializer = BlogSerializer(blog, context={'request': request})
         return Response(serializer.data)
+    
+    def delete(self, request, id):
+        blog = get_object_or_404(Blog, id=id)
+        blog.delete()
+        return Response(status=204)

@@ -113,8 +113,6 @@ function BlogList() {
                                     Read More →
                                 </button>
 
-                                <button>Delete</button>
-                                <button>Update</button>
                             </div>
 
                         </div>

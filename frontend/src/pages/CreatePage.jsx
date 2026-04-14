@@ -95,6 +95,7 @@ function CreatePage() {
                 )
 
                 console.log(posting.data)
+                navigate('/')
 
             } catch (error) {
                 console.error("Error adding blog:", error)
