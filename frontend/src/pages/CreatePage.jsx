@@ -20,15 +20,15 @@ function CreatePage() {
         }
 
         if (!formData.content) {
-            errs.name = "Required blog content"
+            errs.content = "Required blog content"
         }
 
         if (!formData.image) {
-            errs.name = "Required blog image"
+            errs.image = "Required blog image"
         }
 
         if (!formData.status) {
-            errs.name = "Required blog status"
+            errs.status = "Required blog status"
         }
 
         setErrors(errs)
@@ -130,6 +130,8 @@ function CreatePage() {
                             placeholder="Enter blog title..."
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         />
+
+                        {errors.title && <span className="text-red-700 text-lg">{errors.title}</span>}
                     </div>
 
                     {/* Content */}
@@ -143,6 +145,8 @@ function CreatePage() {
                             placeholder="Write your blog content..."
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         ></textarea>
+
+                        {errors.content && <span className="text-red-700 text-lg">{errors.content}</span>}
                     </div>
 
                     {/* Image */}
@@ -154,6 +158,8 @@ function CreatePage() {
                             name='image'
                             className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white"
                         />
+
+                        {errors.image && <span className="text-red-700 text-lg">{errors.image}</span>}
                     </div>
 
                     {/* Status */}
@@ -168,6 +174,8 @@ function CreatePage() {
                             <option value="draft">Draft</option>
                             <option value="published">Published</option>
                         </select>
+                        {errors.status && <span className="text-red-700 text-lg">{errors.status}</span>}
+
                     </div>
 
                     {/* Submit Button */}

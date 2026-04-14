@@ -4,6 +4,7 @@ from blog.models import Blog
 from blog.serializers import BlogSerializer
 from rest_framework.response import Response
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 
@@ -25,3 +26,10 @@ class BlogList(APIView):
         return Response(serializer.errors)
 
 
+
+
+class BlogDetail(APIView):
+    def get(self, request, id):
+        blog = get_object_or_404(Blog, id=id)
+        serializer = BlogSerializer(blog, context={'request': request})
+        return Response(serializer.data)
