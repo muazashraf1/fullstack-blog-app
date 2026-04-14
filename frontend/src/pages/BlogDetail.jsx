@@ -41,6 +41,9 @@ function BlogDetail() {
     }
   }
 
+  console.log(id);
+  
+
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4 flex justify-center">
 
@@ -72,7 +75,7 @@ function BlogDetail() {
 
           {/* Edit Button */}
           <button
-            onClick={() => navigate(`/edit-blog/${id}`)}
+            onClick={() => navigate(`/update-blog/${id}/`)}
             className="px-5 py-2 bg-blue-500 text-white rounded-xl shadow-md 
     hover:bg-blue-600 hover:scale-105 transition-all duration-200"
           >
