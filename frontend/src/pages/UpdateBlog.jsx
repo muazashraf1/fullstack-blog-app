@@ -1,6 +1,6 @@
 import axios from 'axios'
-import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 
 function UpdateBlog() {
     const { id } = useParams()
@@ -12,27 +12,90 @@ function UpdateBlog() {
         status: "",
     })
 
+    const navigate = useNavigate()
+
+
+    const handleValidation = () => {
+        let errs = {}
+
+        if (!formData.title) {
+            errs.title = "Required blog name"
+        }
+
+        if (!formData.content) {
+            errs.content = "Required blog content"
+        }
+
+        if (!formData.image) {
+            errs.image = "Required blog image"
+        }
+
+        if (!formData.status) {
+            errs.status = "Required blog status"
+        }
+
+        setErrors(errs)
+        return Object.keys(errs).length === 0
+
+    }
+
+
     const singleFetch = async () => {
         try {
-            const fetching = await axios.get(`http://127.0.0.1:8000/api/blog/${id}/`)
+            const fetching = await axios.get(`http://127.0.0.1:8000/api/blogs/${id}/`)
             setFormData(fetching.data)
         } catch (error) {
             console.error("Error in fetching the blog for editing:", error)
         }
     }
 
-
-
-    console.log(id);
+    useEffect(() => {
+        singleFetch()
+    }, [])
 
     const handleChange = (e) => {
-        const {name, value} = e.target 
+        const { name, value, files } = e.target
 
-        if(name === "image"){
-            
+        if (name === "image") {
+            setFormData({
+                ...formData,
+                image: files[0]
+            })
+        } else {
+            setFormData({
+                ...formData,
+                [name]: value
+            })
         }
     }
 
+    const handleSubmit = async (e) => {
+        e.prenetDefault()
+        const isValid = handleValidation()
+
+        if (isValid) {
+            try {
+                const data = new FormData
+                data.append("title", formData.title)
+                data.append("content", formData.content)
+                data.append("image", formData.image)
+                data.append("status", formData.status)
+                const putting = await axios.put(`http://127.0.0.1:8000/api/blogs/${id}/`,
+                    data,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data"
+                        }
+                    }
+                )
+                if (putting.status === 200) {
+                    navigate('/blog-list')
+                }
+            } catch (error) {
+                console.error("Error in updating:", error)
+            }
+        }
+    }
 
     return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-10">
@@ -110,7 +173,7 @@ function UpdateBlog() {
                         type="submit"
                         className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-3 rounded-lg font-semibold shadow-md hover:shadow-xl hover:scale-[1.02] transition duration-300"
                     >
-                        Create Blog 🚀
+                        Update Blog 🚀
                     </button>
 
                 </form>
