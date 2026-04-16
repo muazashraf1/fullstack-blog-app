@@ -1,17 +1,25 @@
 import { useState } from "react";
- 
+import { useNavigate } from "react-router-dom";
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
- 
+
+  const navigate = useNavigate()
+
   // Mock state — replace with real auth logic later
   const isLoggedIn = false;
   const userName = "Ali Khan";
- 
+
+
+  const handleNavigate = () => {
+    navigate('/register')
+  }
+
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md">
       <div className="mx-auto max-w-6xl px-6">
         <div className="flex h-16 items-center justify-between">
- 
+
           {/* ── Logo ── */}
           <a href="/" className="flex items-center gap-2 group">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 shadow-sm shadow-indigo-200 transition-transform duration-200 group-hover:scale-105">
@@ -32,7 +40,7 @@ const Navbar = () => {
               Blog<span className="text-indigo-600">App</span>
             </span>
           </a>
- 
+
           {/* ── Desktop Nav Links ── */}
           <div className="hidden md:flex items-center gap-1">
             <a
@@ -54,7 +62,7 @@ const Navbar = () => {
               Create Blog
             </a>
           </div>
- 
+
           {/* ── Auth Section ── */}
           <div className="hidden md:flex items-center gap-3">
             {isLoggedIn ? (
@@ -71,7 +79,7 @@ const Navbar = () => {
                     {userName}
                   </span>
                 </div>
- 
+
                 {/* Logout button */}
                 <button className="rounded-lg border border-slate-200 px-4 py-2 text-[13px] font-medium text-slate-600 transition-all duration-150 hover:border-red-200 hover:bg-red-50 hover:text-red-600">
                   Logout
@@ -86,10 +94,10 @@ const Navbar = () => {
                 >
                   Login
                 </a>
- 
+
                 {/* Sign Up */}
                 <a
-                  href="/signup"
+                  onClick={handleNavigate}
                   className="rounded-lg bg-indigo-600 px-4 py-2 text-[14px] font-medium text-white shadow-sm shadow-indigo-200 transition-all duration-150 hover:bg-indigo-700 hover:shadow-indigo-300 active:scale-[0.97]"
                 >
                   Sign Up
@@ -104,5 +112,5 @@ const Navbar = () => {
     </nav>
   );
 };
- 
+
 export default Navbar;

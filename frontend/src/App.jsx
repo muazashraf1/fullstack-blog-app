@@ -6,6 +6,8 @@ import BlogList from './pages/BlogList'
 import CreatePage from './pages/CreatePage'
 import BlogDetail from './pages/BlogDetail'
 import UpdateBlog from './pages/UpdateBlog'
+import Register from './pages/Register'
+import Login from './pages/Login'
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path="/create-blog" element={<CreatePage />} />
         <Route path="/blog-detail/:id" element={<BlogDetail />} />
         <Route path="/update-blog/:id" element={<UpdateBlog />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </>
   )
