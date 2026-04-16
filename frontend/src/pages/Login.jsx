@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 function Login() {
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
-        email: '',
+        username: '',
         password: ''
     })
 
@@ -24,6 +24,10 @@ function Login() {
         try {
             const res = await axios.post('http://127.0.0.1:8000/api/login/', formData)
             localStorage.setItem("token", res.data.access)
+            localStorage.setItem("refresh", res.data.refresh)
+            localStorage.setItem("username", formData.username)
+            alert("login successfully")
+            navigate('/')
         } catch (error) {
             console.error("Error in login:", error)
         }
@@ -50,11 +54,11 @@ function Login() {
 
                     {/* Email */}
                     <div>
-                        <label className="block mb-1 font-medium">Email</label>
+                        <label className="block mb-1 font-medium">Username</label>
                         <input
-                            type="email"
-                            name='email'
-                            value={formData.email}
+                            type="text"
+                            name='username'
+                            value={formData.username}
                             onChange={handleChange}
                             placeholder="Enter your email"
                             className="w-full border border-gray-300 rounded-lg px-4 py-2 

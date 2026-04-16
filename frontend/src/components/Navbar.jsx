@@ -6,14 +6,20 @@ const Navbar = () => {
 
   const navigate = useNavigate()
 
-  // Mock state — replace with real auth logic later
-  const isLoggedIn = false;
-  const userName = "Ali Khan";
+  const token = localStorage.getItem("token")
+  const isLoggedIn = !!token
 
 
   const handleNavigate = () => {
     navigate('/register')
   }
+
+  const handlelogout = () => {
+    localStorage.removeItem("token")
+    navigate('/login')
+  }
+
+  const username = localStorage.getItem("username")
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-md">
@@ -70,18 +76,15 @@ const Navbar = () => {
                 {/* User chip */}
                 <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5">
                   <div className="flex h-6 w-6 items-center justify-center rounded-full bg-indigo-100 text-[10px] font-semibold text-indigo-700">
-                    {userName
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
+                    {username?.charAt(0).toUpperCase()}
                   </div>
                   <span className="text-[13px] font-medium text-slate-700">
-                    {userName}
+                    {username}
                   </span>
                 </div>
 
                 {/* Logout button */}
-                <button className="rounded-lg border border-slate-200 px-4 py-2 text-[13px] font-medium text-slate-600 transition-all duration-150 hover:border-red-200 hover:bg-red-50 hover:text-red-600">
+                <button onClick={handlelogout} className="rounded-lg border border-slate-200 px-4 py-2 text-[13px] font-medium text-slate-600 transition-all duration-150 hover:border-red-200 hover:bg-red-50 hover:text-red-600">
                   Logout
                 </button>
               </>

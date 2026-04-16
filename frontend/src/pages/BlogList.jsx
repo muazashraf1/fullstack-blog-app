@@ -41,17 +41,49 @@ function BlogList() {
 
     const fetchingAllBlogs = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/blogs/')
+            const token = localStorage.getItem("token")
+
+            const headers = token
+                ? { Authorization: `Bearer ${token}` }
+                : {}
+
+            const response = await axios.get(
+                'http://127.0.0.1:8000/api/blogs/',
+                { headers }
+            )
+
             setAllBlogs(response.data)
         } catch (error) {
             console.error(error)
         }
     }
+    
+    // const fetchingAllBlogs = async () => {
+    //     try {
+    //         const token = localStorage.getItem("token")
+    //         const response = await axios.get('http://127.0.0.1:8000/api/blogs/', {
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`
+    //             }
+    //         })
+    //         setAllBlogs(response.data)
+    //     } catch (error) {
+    //         console.error(error)
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     const token = localStorage.getItem("token")
+    //     if (!token) {
+    //         navigate('/login')
+    //     } else {
+    //         fetchingAllBlogs()
+    //     }
+    // }, [navigate])
 
     useEffect(() => {
         fetchingAllBlogs()
     }, [])
-
 
     const handleView = (id) => {
         navigate(`/blog-detail/${id}`)

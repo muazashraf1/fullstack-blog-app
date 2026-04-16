@@ -9,7 +9,12 @@ function BlogDetail() {
 
   const singleFetching = async () => {
     try {
-      const fetching = await axios.get(`http://127.0.0.1:8000/api/blogs/${id}/`)
+      const token = localStorage.getItem("token");
+      const fetching = await axios.get(`http://127.0.0.1:8000/api/blogs/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
       setSingleBlog(fetching.data)
     } catch (error) {
       console.error("Error in fetching single blog:", error)
@@ -31,8 +36,13 @@ function BlogDetail() {
 
   const handleDelete = async () => {
     try {
-      const deleting = await axios.delete(`http://127.0.0.1:8000/api/blogs/${id}/`)
-      if(deleting.status === 204) {
+      const token = localStorage.getItem("token");
+      const deleting = await axios.delete(`http://127.0.0.1:8000/api/blogs/${id}/`, {
+        headers : {
+          Authorization : `Bearer ${token}`
+        }
+      })
+      if (deleting.status === 204) {
         // singleFetching()
         navigate('/blog-list')
       }
@@ -42,7 +52,7 @@ function BlogDetail() {
   }
 
   console.log(id);
-  
+
 
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4 flex justify-center">

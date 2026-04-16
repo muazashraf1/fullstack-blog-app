@@ -7,12 +7,13 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 # Create your views here.
 
 
 class BlogList(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request):
         query_set = Blog.objects.all()
@@ -26,13 +27,14 @@ class BlogList(APIView):
         if serializer.is_valid():
             # serializer.save()
             user = User.objects.first()  # temporary hal for author without JWT
-            serializer.save(author=user)  # temporary hal for author without JWT
+            # serializer.save(author=user)  # temporary hal for author without JWT
+            serializer.save(author=request.user)  # temporary hal for author without JWT
             return Response(serializer.data)
         return Response(serializer.errors)
 
 
 class BlogDetail(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get(self, request, id):
         blog = get_object_or_404(Blog, id=id)
         serializer = BlogSerializer(blog, context={"request": request})
@@ -40,11 +42,15 @@ class BlogDetail(APIView):
 
     def delete(self, request, id):
         blog = get_object_or_404(Blog, id=id)
+        if blog.author != request.user:
+            return Response({"error": "Not allowed"}, status=403)
         blog.delete()
         return Response(status=204)
 
     def put(self, request, id):
         blog = get_object_or_404(Blog, id=id)
+        if blog.author != request.user:
+            return Response({"error": "Not allowed"}, status=403)
         serializer = BlogSerializer(blog, data=request.data)
         # serializer = BlogSerializer(blog, data=request.data, partial=True)
         if serializer.is_valid():
@@ -54,6 +60,8 @@ class BlogDetail(APIView):
 
     def patch(self, request, id):
         blog = get_object_or_404(Blog, id=id)
+        if blog.author != request.user:
+            return Response({"error": "Not allowed"}, status=403)
         serializer = BlogSerializer(blog, data=request.data, partial=True)
 
         if serializer.is_valid():

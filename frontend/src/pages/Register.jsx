@@ -32,6 +32,11 @@ function Register() {
         }
     }
 
+
+    const handleLogin = () => {
+        navigate('/login')
+    }
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
 
@@ -116,7 +121,7 @@ function Register() {
                 {/* Footer */}
                 <p className="text-center text-sm text-gray-500 mt-5">
                     Already have an account?
-                    <span className="text-indigo-600 font-medium cursor-pointer ml-1">
+                    <span onClick={handleLogin} className="text-indigo-600 font-medium cursor-pointer ml-1">
                         Login
                     </span>
                 </p>

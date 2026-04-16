@@ -84,12 +84,15 @@ function CreatePage() {
                 data.append("image", formData.image)
                 data.append("status", formData.status)
 
+                const token = localStorage.getItem("token")
+
                 const posting = await axios.post(
                     'http://127.0.0.1:8000/api/blogs/',
                     data,
                     {
                         headers: {
-                            "Content-Type": "multipart/form-data"
+                            "Content-Type": "multipart/form-data",
+                            Authorization: `Bearer ${token}`
                         }
                     }
                 )

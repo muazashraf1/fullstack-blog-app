@@ -42,7 +42,12 @@ function UpdateBlog() {
 
     const singleFetch = async () => {
         try {
-            const fetching = await axios.get(`http://127.0.0.1:8000/api/blogs/${id}/`)
+            const token = localStorage.getItem("token");
+            const fetching = await axios.get(`http://127.0.0.1:8000/api/blogs/${id}/`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
             setFormData(fetching.data)
         } catch (error) {
             console.error("Error in fetching the blog for editing:", error)
@@ -83,12 +88,14 @@ function UpdateBlog() {
                     data.append("image", formData.image)
                 }
                 data.append("status", formData.status)
+                const token = localStorage.getItem("token");
                 // const putting = await axios.put(`http://127.0.0.1:8000/api/blogs/${id}/`,
                 const putting = await axios.patch(`http://127.0.0.1:8000/api/blogs/${id}/`,
                     data,
                     {
                         headers: {
-                            "Content-Type": "multipart/form-data"
+                            "Content-Type": "multipart/form-data",
+                            Authorization: `Bearer ${token}`
                         }
                     }
                 )
