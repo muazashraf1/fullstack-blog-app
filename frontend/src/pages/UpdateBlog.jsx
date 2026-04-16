@@ -70,17 +70,21 @@ function UpdateBlog() {
     }
 
     const handleSubmit = async (e) => {
-        e.prenetDefault()
+        e.preventDefault()
         const isValid = handleValidation()
 
         if (isValid) {
             try {
-                const data = new FormData
+                const data = new FormData()
                 data.append("title", formData.title)
                 data.append("content", formData.content)
-                data.append("image", formData.image)
+                // data.append("image", formData.image)
+                if (formData.image instanceof File) {
+                    data.append("image", formData.image)
+                }
                 data.append("status", formData.status)
-                const putting = await axios.put(`http://127.0.0.1:8000/api/blogs/${id}/`,
+                // const putting = await axios.put(`http://127.0.0.1:8000/api/blogs/${id}/`,
+                const putting = await axios.patch(`http://127.0.0.1:8000/api/blogs/${id}/`,
                     data,
                     {
                         headers: {
@@ -92,9 +96,12 @@ function UpdateBlog() {
                     navigate('/blog-list')
                 }
             } catch (error) {
-                console.error("Error in updating:", error)
+                // console.error("Error in updating:", error)
+                console.log(error.response.data) // exact backend error mil jata hai (super helpful)
             }
         }
+
+
     }
 
     return (

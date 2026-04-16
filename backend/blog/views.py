@@ -41,8 +41,19 @@ class BlogDetail(APIView):
     
     def put(self, request, id):
         blog = get_object_or_404(Blog, id=id)
-        serializer = BlogSerializer(blog, data = request.data)
+        serializer = BlogSerializer(blog, data=request.data) 
+        # serializer = BlogSerializer(blog, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response(serializer.errors, status=204)
+        return Response(serializer.errors, status=400)
+    
+    def patch(self, request, id):
+        blog = get_object_or_404(Blog, id=id)
+        serializer = BlogSerializer(blog, data=request.data, partial=True)
+    
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+    
+        return Response(serializer.errors, status=400)
