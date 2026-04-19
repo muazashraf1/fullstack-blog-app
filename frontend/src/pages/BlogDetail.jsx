@@ -8,8 +8,11 @@ function BlogDetail() {
   const [singleBlog, setSingleBlog] = useState(null)
 
   const singleFetching = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate('/login')
+    } return
     try {
-      const token = localStorage.getItem("token");
       const fetching = await axios.get(`http://127.0.0.1:8000/api/blogs/${id}/`, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -23,7 +26,7 @@ function BlogDetail() {
 
   useEffect(() => {
     singleFetching()
-  }, [])
+  }, [id])
 
   if (!singleBlog) {
     return (
@@ -35,11 +38,15 @@ function BlogDetail() {
 
 
   const handleDelete = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate('/login')
+    } return
+    
     try {
-      const token = localStorage.getItem("token");
       const deleting = await axios.delete(`http://127.0.0.1:8000/api/blogs/${id}/`, {
-        headers : {
-          Authorization : `Bearer ${token}`
+        headers: {
+          Authorization: `Bearer ${token}`
         }
       })
       if (deleting.status === 204) {
