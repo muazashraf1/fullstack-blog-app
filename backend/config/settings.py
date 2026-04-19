@@ -127,6 +127,13 @@ USE_I18N = True
 USE_TZ = True
 
 
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),  # 👈 1 hour
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 

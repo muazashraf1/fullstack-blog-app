@@ -28,6 +28,7 @@ function Login() {
             localStorage.setItem("username", formData.username)
             alert("login successfully")
             navigate('/')
+            
         } catch (error) {
             console.error("Error in login:", error)
         }

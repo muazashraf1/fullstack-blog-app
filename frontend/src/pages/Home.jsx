@@ -3,6 +3,9 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
  
 const Home = () => {
+  const token = localStorage.getItem("token")
+  console.log("token:", token);
+  
     const navigate = useNavigate()
   return (
     <div className="min-h-screen bg-slate-50 font-sans">

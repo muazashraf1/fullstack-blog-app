@@ -9,7 +9,7 @@ function CreatePage() {
         title: "",
         content: "",
         image: "",
-        status: "",
+        status: "draft",
     })
 
     const handleValidation = () => {
@@ -85,6 +85,9 @@ function CreatePage() {
                 data.append("status", formData.status)
 
                 const token = localStorage.getItem("token")
+
+                console.log(token);
+                
 
                 const posting = await axios.post(
                     'http://127.0.0.1:8000/api/blogs/',
